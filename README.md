@@ -10,8 +10,8 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/AmanJain18/interview-schedular.svg)](https://github.com/AmanJain18/interview-schedular/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AmanJain18/interview-schedular.svg)](https://github.com/AmanJain18/interview-schedular/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/AmanJain18/interview-scheduler.svg)](https://github.com/AmanJain18/interview-scheduler/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AmanJain18/interview-scheduler.svg)](https://github.com/AmanJain18/interview-scheduler/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -21,6 +21,9 @@
 <p align="center"> A web-based application for managing interview schedules, allowing interviewers and candidates to view, schedule, edit, and reschedule interviews with ease.
     <br> 
 </p>
+
+[![Project Image 1](/screenshots/)](optional-link-for-image-1)
+[![Project Image 2](/screenshots/)](optional-link-for-image-2)
 
 ## 📝 Table of Contents
 
@@ -57,7 +60,7 @@ To run this project, you'll need to have the following software installed:
 1. Clone the repository to your local machine:
 
     ```bash
-    git clone https://github.com/AmanJain18/interview-schedular.git
+    git clone https://github.com/AmanJain18/interview-scheduler.git
     ```
 
 2. Navigate to the project directory:
@@ -130,14 +133,17 @@ Once the application is running, you can perform the following actions:
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
+- [React](https://reactjs.org/) - Frontend framework for building user interfaces
+- [Vite](https://vitejs.dev/) - Build tool for fast development and production
 - [Zustand](https://github.com/pmndrs/zustand) - State management library for managing interview data
 - [React Big Calendar](https://github.com/jquense/react-big-calendar) - Calendar library for managing interview schedules
 - [React Hook Form](https://react-hook-form.com/) - Form management library for easy validation and handling
 - [Shadcn UI](https://ui.shadcn.com/) - Accessible and customizable UI components
 - [React Router DOM](https://reactrouter.com/) - Routing library for navigation between pages
 - [Zod](https://github.com/colinhacks/zod) - Schema validation library for validating form data
+- [date-fns](https://date-fns.org/) - Date and time library for managing date and time-related operations
 
-## Design Decisions <a name = "design_decisions"></a>
+## 🖌️ Design Decisions <a name = "design_decisions"></a>
 
 ### State Management:
 - **Zustand** is used for state management, providing a centralized store for interviews and interviewers.
@@ -164,19 +170,19 @@ Once the application is running, you can perform the following actions:
 ### Notifications:
 - **Shadcn toast component** is used for providing user feedback through toast notifications.
 
-## Assumptions <a name = "assumptions"></a>
+## 🤔 Assumptions <a name = "assumptions"></a>
 
 - **Interview Duration**: The application assumes a default interview duration of 1 hour. This can be customized in the InterviewForm component and the DateTimePicker component.
 - **Single-Day Interviews**: Currently, interviews are scheduled for a single date and time slot. Multi-day or recurring interviews are not supported.
 - **Working Hours**: The application uses pre-defined working hours (9:00 AM to 6:00 PM) for scheduling only available in weekdays. This can be adjusted in the DateTimePicker and relevant constant files.
 
-## Challenges Faced <a name = "challenges"></a>
+## 🧠 Challenges Faced <a name = "challenges"></a>
 
 - **Implementing Drag and Drop**: Integrating drag-and-drop functionality with React Big Calendar and updating the Zustand store required careful handling of event data and state updates.
 - **Time Slot Management**: Dynamically calculating and displaying available time slots based on interviewer availability, selected date, and interview duration required implementing custom logic in the DateTimePicker component.
 - **Conflict Validation**: Ensuring that interviews don't overlap for the same interviewer involves checking time slot boundaries and potential conflicts.
 
-## Future Improvements <a name = "future"></a>
+## 🔮 Future Improvements <a name = "future"></a>
 
 - **Multi-Day Interviews**: Support scheduling interviews that span multiple days.
 
