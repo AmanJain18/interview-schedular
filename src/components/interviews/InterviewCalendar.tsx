@@ -2,7 +2,9 @@ import { useCallback, useState } from 'react';
 import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import withDragAndDrop, {
+    EventInteractionArgs,
+} from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useInterviewStore } from '@/store/interviews';
 import { CalendarEvent } from '@/types';
@@ -57,7 +59,9 @@ const InterviewCalendar = () => {
     });
 
     const handleEventDrop = useCallback(
-        ({ event, start }: { event: CalendarEvent; start: Date }) => {
+        (args: EventInteractionArgs<object>) => {
+            const { event, start } = args;
+            const calendarEvent = event as CalendarEvent;
             const newStart = new Date(start);
             const dayOfWeek = newStart.getDay();
             if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -73,7 +77,10 @@ const InterviewCalendar = () => {
             }
             const newDate = format(newStart, 'yyyy-MM-dd');
             const newTimeSlot = format(newStart, 'HH:mm');
-            updateInterview(event.id, { date: newDate, timeSlot: newTimeSlot });
+            updateInterview(calendarEvent.id, {
+                date: newDate,
+                timeSlot: newTimeSlot,
+            });
             toast({
                 title: 'Interview Updated',
                 description: 'Interview schedule updated successfully.',
@@ -81,10 +88,10 @@ const InterviewCalendar = () => {
         },
         [updateInterview, toast],
     );
-
     // Handler for clicking (selecting) an event to edit.
-    const handleSelectEvent = useCallback((event: CalendarEvent) => {
-        setSelectedEvent(event);
+    const handleSelectEvent = useCallback((event: object) => {
+        const calendarEvent = event as CalendarEvent;
+        setSelectedEvent(calendarEvent);
     }, []);
 
     return (
