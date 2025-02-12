@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     Table,
     TableBody,
@@ -31,12 +30,17 @@ import {
 } from '@/components/ui/alert-dialog';
 import { format } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
-export function InterviewTable() {
+interface InterviewTableProps {
+    interviews: Interview[];
+}
+
+export function InterviewTable({ interviews }: InterviewTableProps) {
     const [interviewToDelete, setInterviewToDelete] = useState<string | null>(
         null,
     );
-    const { interviews, deleteInterview } = useInterviewStore();
+    const { deleteInterview } = useInterviewStore();
     const navigate = useNavigate();
     const { toast } = useToast();
 
@@ -73,7 +77,7 @@ export function InterviewTable() {
                     <TableBody>
                         {interviews.map((interview: Interview) => {
                             return (
-                                <TableRow>
+                                <TableRow key={interview.id}>
                                     <TableCell className='font-medium'>
                                         {interview.candidateName}
                                     </TableCell>
@@ -82,9 +86,14 @@ export function InterviewTable() {
                                     </TableCell>
                                     <TableCell>{interview.type}</TableCell>
                                     <TableCell>
-                                        {format(interview.date, 'PPPP')}
+                                        {format(
+                                            new Date(interview.date),
+                                            'PPPP',
+                                        )}
                                     </TableCell>
-                                    <TableCell>{formatTimeSlot(interview.timeSlot)}</TableCell>
+                                    <TableCell>
+                                        {formatTimeSlot(interview.timeSlot)}
+                                    </TableCell>
                                     <TableCell
                                         className={cn(
                                             'capitalize',
@@ -145,12 +154,10 @@ export function InterviewTable() {
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Are you absolutely sure?
-                        </AlertDialogTitle>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete the interview.
+                            This action cannot be undone. The interview will be
+                            permanently deleted.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
