@@ -26,9 +26,15 @@ import { format } from 'date-fns';
 
 interface InterviewFormProps {
     interviewId?: string;
+    onDialogClose?: () => void;
+    isEditFromDialog?: boolean;
 }
 
-export default function InterviewForm({ interviewId }: InterviewFormProps) {
+export default function InterviewForm({
+    interviewId,
+    onDialogClose,
+    isEditFromDialog,
+}: InterviewFormProps) {
     const { addInterview, updateInterview, getInterviewById, interviewers } =
         useInterviewStore();
     const navigate = useNavigate();
@@ -75,7 +81,11 @@ export default function InterviewForm({ interviewId }: InterviewFormProps) {
                         'The interview has been successfully scheduled.',
                 });
             }
-            navigate('/');
+            if (isEditFromDialog && onDialogClose) {
+                onDialogClose();
+            } else {
+                navigate('/');
+            }
         } catch (err) {
             if (err) {
                 toast({
@@ -240,7 +250,11 @@ export default function InterviewForm({ interviewId }: InterviewFormProps) {
                     <Button
                         type='button'
                         variant='outline'
-                        onClick={() => navigate('/')}
+                        onClick={
+                            isEditFromDialog
+                                ? onDialogClose
+                                : () => navigate('/')
+                        }
                     >
                         Cancel
                     </Button>
