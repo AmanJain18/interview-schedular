@@ -26,14 +26,19 @@ const Dashboard = () => {
 
     // Filter interviews based on the selected filters
     const filteredInterviews = useMemo(() => {
-        return interviews.filter((interview) => {
-            const matchesStatus =
-                statusFilter === 'all' || interview.status === statusFilter;
-            const matchesInterviewer =
-                interviewerFilter === 'all' ||
-                interview.interviewerName === interviewerFilter;
-            return matchesStatus && matchesInterviewer;
-        });
+        return interviews
+            .filter((interview) => {
+                const matchesStatus =
+                    statusFilter === 'all' || interview.status === statusFilter;
+                const matchesInterviewer =
+                    interviewerFilter === 'all' ||
+                    interview.interviewerName === interviewerFilter;
+                return matchesStatus && matchesInterviewer;
+            })
+            .sort(
+                (a, b) =>
+                    new Date(b.date).getTime() - new Date(a.date).getTime(),
+            );
     }, [interviews, statusFilter, interviewerFilter]);
 
     return (
