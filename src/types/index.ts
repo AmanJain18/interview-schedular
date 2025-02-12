@@ -5,11 +5,11 @@ export interface Interview {
     id: string;
     candidateName: string;
     interviewerName: string;
-    date: string; // "YYYY-MM-DD"
-    timeSlot: string; // "HH:mm"
     type: InterviewType;
     status: InterviewStatus;
-    notes?: string;
+    date: string; // "YYYY-MM-DD"
+    timeSlot: string; // "HH:mm"
+    endSlot: string;
 }
 
 export interface Interviewer {
@@ -17,4 +17,11 @@ export interface Interviewer {
     name: string;
 }
 
-export type InterviewFormData = Omit<Interview, 'id' | 'status'>;
+export interface CalendarEvent {
+    id: string;
+    title: string;
+    start: Date;
+    end: Date;
+}
+
+export type InterviewFormData = Omit<Interview, 'id' | 'status' | 'endSlot'>;

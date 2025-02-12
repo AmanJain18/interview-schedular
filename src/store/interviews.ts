@@ -1,33 +1,36 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Interview, Interviewer, InterviewFormData } from '../types';
+import { INTERVIEWERS } from '@/lib/constant';
+import { TInterviewFormSchema } from '@/lib/schema';
 
-export const INTERVIEWERS = [
-    { id: '1', name: 'John Doe' },
-    { id: '2', name: 'Mary' },
-    { id: '3', name: 'Alex' },
-] as const;
-
-export const WORKING_HOURS = {
-    start: 9, // 9 AM
-    end: 18, // 6 PM
-};
 interface InterviewStore {
     interviewers: Interviewer[];
     interviews: Interview[];
     addInterview: (interview: InterviewFormData) => void;
-    updateInterview: (id: string, interview: Partial<Interview>) => void;
+    updateInterview: (
+        id: string,
+        interview: Partial<TInterviewFormSchema>,
+    ) => void;
     deleteInterview: (id: string) => void;
     getInterviewById: (id: string) => Interview | undefined;
     getInterviewerById: (id: string) => Interviewer | undefined;
 }
+
+const calculateEndSlot = (timeSlot: string): string => {
+    const [hourStr, minute] = timeSlot.split(':');
+    let hour = parseInt(hourStr, 10);
+    hour += 1;
+    const newHourStr = hour.toString().padStart(2, '0');
+    return `${newHourStr}:${minute}`;
+};
 
 export const useInterviewStore = create<InterviewStore>()(
     persist(
         (set, get) => ({
             interviews: [],
             interviewers: [...INTERVIEWERS],
-            addInterview: (interview) =>
+            addInterview: (interview) => {
                 set((state) => ({
                     interviews: [
                         ...state.interviews,
@@ -35,25 +38,33 @@ export const useInterviewStore = create<InterviewStore>()(
                             ...interview,
                             id: crypto.randomUUID(),
                             status: 'scheduled',
+                            endSlot: calculateEndSlot(interview.timeSlot),
                         },
                     ],
-                })),
-            updateInterview: (id, updatedInterview) =>
+                }));
+            },
+            updateInterview: (id, updatedInterview) => {
+                const interview = get().interviews.find((i) => i.id === id);
+                if (!interview) return;
+
+                // If the timeSlot is updated, recalculate endSlot; otherwise, retain the current endSlot
+                const newEndSlot = updatedInterview.timeSlot
+                    ? calculateEndSlot(updatedInterview.timeSlot)
+                    : interview.endSlot;
+
                 set((state) => ({
-                    interviews: state.interviews.map((interview) =>
-                        interview.id === id
-                            ? { ...interview, ...updatedInterview }
-                            : interview,
+                    interviews: state.interviews.map((i) =>
+                        i.id === id
+                            ? { ...i, ...updatedInterview, endSlot: newEndSlot }
+                            : i,
                     ),
-                })),
+                }));
+            },
             deleteInterview: (id) =>
                 set((state) => ({
-                    interviews: state.interviews.filter(
-                        (interview) => interview.id !== id,
-                    ),
+                    interviews: state.interviews.filter((i) => i.id !== id),
                 })),
-            getInterviewById: (id) =>
-                get().interviews.find((interview) => interview.id === id),
+            getInterviewById: (id) => get().interviews.find((i) => i.id === id),
             getInterviewerById: (id) =>
                 get().interviewers.find((i) => i.id === id),
         }),
