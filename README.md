@@ -22,8 +22,14 @@
     <br> 
 </p>
 
-[![Project Image 1](/screenshots/)](optional-link-for-image-1)
-[![Project Image 2](/screenshots/)](optional-link-for-image-2)
+[![Dashboard](/screenshots/home.png)](/screenshots/home.png)
+<p align="center">Dashboard</p>
+
+[![Schedule](/screenshots/schedule.png)](/screenshots/schedule.png)
+<p align="center">Schedule Interview</p>
+
+[![Calendar View](/screenshots/calendar.png)](/screenshots/calendar.png) 
+<p align="center">Calender View</p>
 
 ## 📝 Table of Contents
 
