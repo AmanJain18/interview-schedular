@@ -26,9 +26,13 @@ interface DateTimePickerProps {
     onTimeChange: (time: string) => void;
 }
 
-// I thought to disable dates before today for selection.
+// I thought to disable dates before today for selection and on weekends.
 const isDateDisabled = (date: Date): boolean => {
     const today = startOfDay(new Date());
+    const dayOfWeek = date.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+        return true;
+    }
     return isBefore(date, today);
 };
 
